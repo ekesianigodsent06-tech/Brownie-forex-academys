@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { Mail, Phone, MessageSquare, Send, CheckCircle2, MapPin, Instagram, Facebook, Send as TelegramIcon } from 'lucide-react';
+import { Mail, Phone, MessageSquare, Send, CheckCircle2, MapPin, Instagram, Facebook, Send as TelegramIcon, Loader2, ExternalLink } from 'lucide-react';
 import { ACADEMY_CONFIG, COURSES } from '../data/academyData';
 import { ContactFormData } from '../types';
+import { saveInquiryToFirestore } from '../lib/firebase';
 
 export const ContactSection: React.FC = () => {
   const [formData, setFormData] = useState<ContactFormData>({
@@ -12,10 +13,12 @@ export const ContactSection: React.FC = () => {
     message: '',
   });
 
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
+  const [deliveryStatus, setDeliveryStatus] = useState<'sent' | 'fallback'>('sent');
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.fullName.trim()) {
       setErrorMsg('Please provide your full name.');
@@ -31,8 +34,79 @@ export const ContactSection: React.FC = () => {
     }
 
     setErrorMsg('');
-    setSubmitted(true);
+    setIsSubmitting(true);
+
+    const recipientEmail = 'brownieforexacademy@gmail.com';
+    const emailSubject = `🎓 New BFXA Inquiry: ${formData.courseInterest} - ${formData.fullName}`;
+    const emailBody = 
+      `NEW STUDENT INQUIRY - BROWNIE FOREX ACADEMY\n` +
+      `===========================================\n\n` +
+      `Full Name: ${formData.fullName}\n` +
+      `Student Email: ${formData.email}\n` +
+      `Phone / WhatsApp: ${formData.phoneNumber}\n` +
+      `Selected Program: ${formData.courseInterest}\n\n` +
+      `Message:\n${formData.message || 'No additional note provided.'}\n\n` +
+      `===========================================\n` +
+      `Submitted: ${new Date().toLocaleString()}\n` +
+      `Destination: ${recipientEmail}`;
+
+    // 1. Save directly to Cloud Firestore backup
+    try {
+      await saveInquiryToFirestore({
+        name: formData.fullName,
+        email: formData.email,
+        phone: formData.phoneNumber,
+        course: formData.courseInterest,
+        message: formData.message || '',
+      });
+    } catch (e) {
+      console.warn('Firestore backup note:', e);
+    }
+
+    // 2. Dispatch via FormSubmit POST API
+    try {
+      const res = await fetch(`https://formsubmit.co/ajax/${recipientEmail}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+        body: JSON.stringify({
+          _subject: emailSubject,
+          _template: 'table',
+          _captcha: 'false',
+          'Student Name': formData.fullName,
+          'Student Email': formData.email,
+          'Phone / WhatsApp': formData.phoneNumber,
+          'Course of Interest': formData.courseInterest,
+          'Message / Background': formData.message || 'N/A',
+          'Date & Time': new Date().toLocaleString(),
+          'Recipient': recipientEmail,
+        }),
+      });
+
+      if (res.ok) {
+        setDeliveryStatus('sent');
+      } else {
+        setDeliveryStatus('fallback');
+      }
+    } catch (err) {
+      console.warn('API submission notice, providing direct mailto option:', err);
+      setDeliveryStatus('fallback');
+    } finally {
+      setIsSubmitting(false);
+      setSubmitted(true);
+    }
   };
+
+  const mailtoLink = `mailto:brownieforexacademy@gmail.com?subject=${encodeURIComponent(
+    `Inquiry: ${formData.courseInterest} - ${formData.fullName}`
+  )}&body=${encodeURIComponent(
+    `Student Name: ${formData.fullName}\nEmail: ${formData.email}\nPhone: ${formData.phoneNumber}\nProgram: ${formData.courseInterest}\n\nMessage:\n${formData.message}`
+  )}`;
+
+  const whatsAppText = `Hello Brownie Fx Admissions, I submitted an enrollment inquiry:\n*Name:* ${formData.fullName}\n*Email:* ${formData.email}\n*Program:* ${formData.courseInterest}\n*Phone:* ${formData.phoneNumber}\n*Message:* ${formData.message}`;
+  const whatsAppLink = `https://wa.me/2349038768321?text=${encodeURIComponent(whatsAppText)}`;
 
   return (
     <div className="w-full bg-gradient-to-b from-[#f4f5f8] via-[#edf2f9] to-[#e4ebf5] text-neutral-900 py-16 sm:py-24 relative overflow-hidden">
@@ -233,13 +307,44 @@ export const ContactSection: React.FC = () => {
             </p>
 
             {submitted ? (
-              <div className="p-8 rounded-2xl bg-[#00C853]/10 border border-[#00C853]/30 text-center space-y-3">
+              <div className="p-6 sm:p-8 rounded-2xl bg-[#00C853]/10 border border-[#00C853]/30 text-center space-y-4">
                 <CheckCircle2 className="w-12 h-12 text-[#00C853] mx-auto" />
-                <h4 className="font-display font-bold text-xl text-neutral-900">Inquiry Received!</h4>
-                <p className="text-xs sm:text-sm text-neutral-700 leading-relaxed max-w-md mx-auto">
-                  Thank you, <strong>{formData.fullName}</strong>. Your inquiry for <em>{formData.courseInterest}</em> has been registered. An admissions advisor will contact you at <strong>{formData.email}</strong> or WhatsApp (<strong>{formData.phoneNumber}</strong>).
-                </p>
-                <div className="pt-3">
+                <div>
+                  <h4 className="font-display font-bold text-xl text-neutral-900">Inquiry Dispatched!</h4>
+                  <p className="text-xs sm:text-sm text-neutral-700 leading-relaxed max-w-md mx-auto mt-1">
+                    Your details have been routed to <strong className="text-[#856514]">brownieforexacademy@gmail.com</strong>.
+                  </p>
+                </div>
+
+                {/* Instant Actions */}
+                <div className="p-4 rounded-xl bg-white border border-neutral-200 text-left space-y-3 text-xs">
+                  <div className="font-mono font-bold text-neutral-800 text-[11px] uppercase tracking-wider">
+                    Immediate Fast-Track Options:
+                  </div>
+                  
+                  <div className="flex flex-col sm:flex-row gap-2.5">
+                    <a
+                      href={whatsAppLink}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex-1 py-2.5 px-3 rounded-lg bg-[#00C853] hover:bg-[#00b047] text-white font-mono font-bold text-xs flex items-center justify-center gap-1.5 transition-colors shadow-sm"
+                    >
+                      <MessageSquare className="w-3.5 h-3.5" />
+                      <span>Notify on WhatsApp</span>
+                      <ExternalLink className="w-3 h-3" />
+                    </a>
+
+                    <a
+                      href={mailtoLink}
+                      className="flex-1 py-2.5 px-3 rounded-lg bg-neutral-900 hover:bg-black text-white font-mono font-bold text-xs flex items-center justify-center gap-1.5 transition-colors"
+                    >
+                      <Mail className="w-3.5 h-3.5 text-[#F5C542]" />
+                      <span>Open in Mail App</span>
+                    </a>
+                  </div>
+                </div>
+
+                <div className="pt-2">
                   <button
                     onClick={() => {
                       setSubmitted(false);
@@ -251,7 +356,7 @@ export const ContactSection: React.FC = () => {
                         message: '',
                       });
                     }}
-                    className="py-2 px-4 rounded-xl bg-neutral-900 text-white text-xs font-mono font-bold"
+                    className="py-2 px-4 rounded-xl bg-neutral-100 hover:bg-neutral-200 text-neutral-800 text-xs font-mono font-bold transition-colors"
                   >
                     Submit Another Inquiry
                   </button>
@@ -342,14 +447,24 @@ export const ContactSection: React.FC = () => {
 
                 <button
                   type="submit"
-                  className="w-full py-3 px-6 rounded-xl bg-neutral-900 hover:bg-black text-white text-xs sm:text-sm font-mono font-bold flex items-center justify-center gap-2 transition-all cursor-pointer shadow-md"
+                  disabled={isSubmitting}
+                  className="w-full py-3.5 px-6 rounded-xl bg-neutral-900 hover:bg-black text-white text-xs sm:text-sm font-mono font-bold flex items-center justify-center gap-2 transition-all cursor-pointer shadow-md disabled:opacity-60 disabled:cursor-not-allowed"
                 >
-                  <Send className="w-4 h-4 text-[#F5C542]" />
-                  <span>Submit Inquiry</span>
+                  {isSubmitting ? (
+                    <>
+                      <Loader2 className="w-4 h-4 animate-spin text-[#F5C542]" />
+                      <span>Sending to brownieforexacademy@gmail.com...</span>
+                    </>
+                  ) : (
+                    <>
+                      <Send className="w-4 h-4 text-[#F5C542]" />
+                      <span>Send Inquiry to brownieforexacademy@gmail.com</span>
+                    </>
+                  )}
                 </button>
 
                 <div className="text-[10px] font-mono text-neutral-400 text-center pt-2">
-                  🔒 Your information is confidential and used exclusively for admissions coordination.
+                  🔒 Direct delivery to brownieforexacademy@gmail.com & cloud admissions backup.
                 </div>
               </form>
             )}

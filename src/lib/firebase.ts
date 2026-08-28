@@ -121,3 +121,29 @@ export async function submitStudentReview(reviewData: Omit<TestimonialItem, 'id'
 
   return docRef.id;
 }
+
+export interface InquirySubmission {
+  name: string;
+  email: string;
+  phone: string;
+  course: string;
+  message: string;
+}
+
+/**
+ * Persist admission inquiries to Firestore
+ */
+export async function saveInquiryToFirestore(inquiry: InquirySubmission): Promise<string> {
+  const inquiriesRef = collection(db, 'inquiries');
+  const docRef = await addDoc(inquiriesRef, {
+    name: inquiry.name.trim(),
+    email: inquiry.email.trim(),
+    phone: inquiry.phone.trim(),
+    course: inquiry.course,
+    message: inquiry.message.trim(),
+    recipientEmail: 'brownieforexacademy@gmail.com',
+    status: 'new',
+    createdAt: serverTimestamp(),
+  });
+  return docRef.id;
+}
