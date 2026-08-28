@@ -107,7 +107,7 @@ export const ContactSection: React.FC = () => {
                     <MapPin className="w-3.5 h-3.5 text-[#008f3a]" />
                     <span>Campus:</span>
                   </span>
-                  <span className="text-[#F5C542] font-semibold text-right">Kubwa, Abuja, Nigeria</span>
+                  <span className="text-[#F5C542] font-semibold text-right">Abuja, Nigeria</span>
                 </div>
               </div>
 

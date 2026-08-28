@@ -43,15 +43,15 @@ export const ACADEMY_CONFIG = {
     
     // Physical Office Address
     address: {
-      building: 'Tee Plaza',
-      landmark: 'After Modern Market',
-      area: 'Kubwa',
+      building: 'DON Melo Mall',
+      landmark: 'DON Melo Mall',
+      area: 'Abuja',
       city: 'Abuja',
       state: 'FCT',
       country: 'Nigeria',
-      fullAddress: 'Tee Plaza, After Modern Market, Kubwa, Abuja, Nigeria',
+      fullAddress: 'DON Melo Mall, Abuja, Nigeria',
     },
-    location: 'Tee Plaza, After Modern Market, Kubwa, Abuja, Nigeria',
+    location: 'DON Melo Mall, Abuja, Nigeria',
     
     // Social Media Handles & Direct Links
     socials: {
