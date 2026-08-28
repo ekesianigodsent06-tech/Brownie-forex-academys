@@ -1,0 +1,20 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Reviews collection: Any student can submit a review, and all visitors can read published reviews
+    match /student_reviews/{reviewId} {
+      allow read: if true;
+      allow create: if request.resource.data.studentName is string
+                    && request.resource.data.studentName.size() > 0
+                    && request.resource.data.studentName.size() <= 100
+                    && request.resource.data.content is string
+                    && request.resource.data.content.size() > 0
+                    && request.resource.data.content.size() <= 2000
+                    && request.resource.data.rating is number
+                    && request.resource.data.rating >= 1
+                    && request.resource.data.rating <= 5;
+      allow update, delete: if false;
+    }
+  }
+}

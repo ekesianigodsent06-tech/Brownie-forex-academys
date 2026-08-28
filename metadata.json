@@ -1,0 +1,6 @@
+{
+  "name": "Brownie Forex Academy",
+  "description": "Premier forex trading education platform featuring interactive market simulation, structured courses, technical analysis, and risk management training.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
