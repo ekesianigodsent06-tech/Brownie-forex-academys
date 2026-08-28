@@ -19,7 +19,7 @@ export const ACADEMY_CONFIG = {
   locationCity: 'Abuja, Nigeria',
 
   // Academy Description
-  description: 'Brownie Forex Academy (BFXA) is an elite trading institution founded in 2023 by Brownie Fx. We specialize exclusively in Gold (XAU/USD), Bitcoin (BTC/USD), and Synthetic Indices, delivering a proven framework for guaranteed profit and financial freedom.',
+  description: 'Brownie Forex Academy (BFXA) is an elite trading institution founded in 2023 by Lucy Ogochukwu Ofozor (Brownie Fx). We specialize exclusively in Gold (XAU/USD), Bitcoin (BTC/USD), and Synthetic Indices, delivering a proven framework for guaranteed profit and financial freedom.',
   
   // Contact Channels
   contact: {

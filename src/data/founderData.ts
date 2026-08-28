@@ -22,7 +22,7 @@ export interface FounderInfo {
 }
 
 export const FOUNDER_INFO: FounderInfo = {
-  fullName: 'Brownie Fx',
+  fullName: 'Lucy Ogochukwu Ofozor',
   professionalName: 'Brownie Fx',
   title: 'Founder & Lead Instructor',
   founded: '2023',
@@ -32,9 +32,9 @@ export const FOUNDER_INFO: FounderInfo = {
   // Founder portrait photo located at /public/founder.jpeg
   photoUrl: '/founder.jpeg',
 
-  shortBio: 'Brownie Fx is the Founder and Lead Instructor of Brownie Forex Academy (BFXA), specializing exclusively in Gold (XAU/USD), Bitcoin (BTC/USD), and Synthetic Indices with a guaranteed profit framework.',
+  shortBio: 'Lucy Ogochukwu Ofozor, professionally known as Brownie Fx, is the Founder and Lead Instructor of Brownie Forex Academy (BFXA), specializing exclusively in Gold (XAU/USD), Bitcoin (BTC/USD), and Synthetic Indices with a guaranteed profit framework.',
   
-  fullBio: `Brownie Fx is the Founder and Lead Instructor of Brownie Forex Academy (BFXA). With a relentless passion for high-precision price action, Gold (XAU/USD), Bitcoin (BTC/USD), and Synthetic Indices, Brownie Fx founded BFXA in 2023 to provide traders with a clear, profitable roadmap to financial freedom.
+  fullBio: `Lucy Ogochukwu Ofozor, professionally known as Brownie Fx, is the Founder and Lead Instructor of Brownie Forex Academy (BFXA). With a relentless passion for high-precision price action, Gold (XAU/USD), Bitcoin (BTC/USD), and Synthetic Indices, she founded BFXA in 2023 to provide traders with a clear, profitable roadmap to financial freedom.
 
 Her trading mastery specializes exclusively in Gold (XAU/USD), Bitcoin (BTC/USD), and Synthetic Indices (Volatility 75, Boom & Crash, Step Index), focusing on high-probability liquidity sweeps and guaranteed profit execution strategies.
 
