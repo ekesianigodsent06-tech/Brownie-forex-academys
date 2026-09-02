@@ -1,5 +1,5 @@
 import React, { useState, useEffect, Suspense, lazy } from 'react';
-import { ArrowRight, PlayCircle, ShieldCheck, Sparkles, BookOpen, ChevronRight, Activity, Award, CheckCircle, Loader2 } from 'lucide-react';
+import { ArrowRight, PlayCircle, ShieldCheck, Sparkles, BookOpen, ChevronRight, Activity, Award, CheckCircle, Loader2, Briefcase } from 'lucide-react';
 import { PageId, Course } from './types';
 import { ACADEMY_CONFIG, COURSES } from './data/academyData';
 import { Navbar } from './components/Navbar';
@@ -15,6 +15,7 @@ const CourseModal = lazy(() => import('./components/CourseModal').then(m => ({ d
 const SimulatorView = lazy(() => import('./components/SimulatorView').then(m => ({ default: m.SimulatorView })));
 const MarketDashboard = lazy(() => import('./components/MarketDashboard').then(m => ({ default: m.MarketDashboard })));
 const PositionCalculator = lazy(() => import('./components/PositionCalculator').then(m => ({ default: m.PositionCalculator })));
+const CapitalPartnershipSection = lazy(() => import('./components/CapitalPartnershipSection').then(m => ({ default: m.CapitalPartnershipSection })));
 const AboutSection = lazy(() => import('./components/AboutSection').then(m => ({ default: m.AboutSection })));
 const FounderSection = lazy(() => import('./components/FounderSection').then(m => ({ default: m.FounderSection })));
 const TestimonialsSection = lazy(() => import('./components/TestimonialsSection').then(m => ({ default: m.TestimonialsSection })));
@@ -40,7 +41,7 @@ export default function App() {
   useEffect(() => {
     const handleHashChange = () => {
       const hash = window.location.hash.replace('#', '') as PageId;
-      if (['home', 'courses', 'about', 'founder', 'simulator', 'faq', 'contact', 'privacy', 'terms', 'risk'].includes(hash)) {
+      if (['home', 'courses', 'about', 'founder', 'simulator', 'faq', 'contact', 'partnership', 'privacy', 'terms', 'risk'].includes(hash)) {
         setCurrentPage(hash);
       }
     };
@@ -102,22 +103,30 @@ export default function App() {
                         </p>
                       </div>
 
-                      {/* Dual Action Buttons */}
-                      <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3.5 pt-2">
+                      {/* Hero Action Buttons */}
+                      <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3 pt-2">
                         <button
                           onClick={() => navigateTo('courses')}
-                          className="w-full sm:w-auto px-7 py-3.5 rounded-xl bg-gold-gradient hover:opacity-95 text-black font-mono font-bold text-sm flex items-center justify-center gap-2 shadow-lg hover:shadow-[#D4AF37]/25 transition-all cursor-pointer group"
+                          className="w-full sm:w-auto px-6 py-3.5 rounded-xl bg-gold-gradient hover:opacity-95 text-black font-mono font-bold text-sm flex items-center justify-center gap-2 shadow-lg hover:shadow-[#D4AF37]/25 transition-all cursor-pointer group"
                         >
                           <span>Start Learning</span>
                           <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                         </button>
 
                         <button
+                          onClick={() => navigateTo('partnership')}
+                          className="w-full sm:w-auto px-6 py-3.5 rounded-xl bg-[#0f1728] hover:bg-[#18233c] text-white font-mono font-bold text-sm border border-[#D4AF37]/50 hover:border-[#D4AF37] flex items-center justify-center gap-2 transition-all cursor-pointer group shadow-md"
+                        >
+                          <Briefcase className="w-4 h-4 text-[#F5C542] group-hover:scale-110 transition-transform" />
+                          <span>Capital Partnership</span>
+                        </button>
+
+                        <button
                           onClick={() => navigateTo('simulator')}
-                          className="w-full sm:w-auto px-7 py-3.5 rounded-xl bg-[#14141c] hover:bg-[#1f1f2a] text-white font-mono font-bold text-sm border border-[#333342] flex items-center justify-center gap-2 transition-all cursor-pointer group shadow-sm"
+                          className="w-full sm:w-auto px-5 py-3.5 rounded-xl bg-[#14141c] hover:bg-[#1f1f2a] text-white font-mono font-bold text-sm border border-[#333342] flex items-center justify-center gap-2 transition-all cursor-pointer group shadow-sm"
                         >
                           <PlayCircle className="w-4 h-4 text-[#00C853] group-hover:scale-110 transition-transform" />
-                          <span>Try Trading Simulator</span>
+                          <span>Simulator</span>
                         </button>
                       </div>
 
@@ -255,12 +264,20 @@ export default function App() {
               {/* MARKET DASHBOARD & SESSIONS */}
               <MarketDashboard />
 
+              {/* CAPITAL PARTNERSHIP AND INVESTMENT (INSTITUTIONAL PAMM) */}
+              <CapitalPartnershipSection onBackToHome={() => navigateTo('home')} />
+
               {/* TESTIMONIALS SECTION */}
               <TestimonialsSection />
 
               {/* FAQ SECTION */}
               <FaqSection />
             </div>
+          )}
+
+          {/* ======================= CAPITAL PARTNERSHIP PAGE ======================= */}
+          {currentPage === 'partnership' && (
+            <CapitalPartnershipSection onBackToHome={() => navigateTo('home')} />
           )}
 
           {/* ======================= COURSES PAGE ======================= */}

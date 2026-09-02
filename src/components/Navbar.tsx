@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Menu, X, PlayCircle, MessageSquare, ChevronRight, ShieldCheck } from 'lucide-react';
+import { Menu, X, PlayCircle, MessageSquare, ChevronRight, ShieldCheck, Briefcase } from 'lucide-react';
 import { PageId } from '../types';
 import { Logo } from './Logo';
 import { ACADEMY_CONFIG } from '../data/academyData';
@@ -21,9 +21,10 @@ export const Navbar: React.FC<NavbarProps> = ({ currentPage, onNavigate }) => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const navItems: { id: PageId; label: string; isHot?: boolean }[] = [
+  const navItems: { id: PageId; label: string; isHot?: boolean; isVip?: boolean }[] = [
     { id: 'home', label: 'Home' },
     { id: 'courses', label: 'Courses' },
+    { id: 'partnership', label: 'Capital Partnership', isVip: true },
     { id: 'about', label: 'About BFXA' },
     { id: 'founder', label: 'Founder' },
     { id: 'simulator', label: 'Simulator', isHot: true },
@@ -69,6 +70,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentPage, onNavigate }) => {
                 }`}
               >
                 <span className="flex items-center gap-1.5">
+                  {item.isVip && <Briefcase className={`w-3 h-3 ${isActive ? 'text-black' : 'text-[#F5C542]'}`} />}
                   {item.label}
                   {item.isHot && (
                     <span
@@ -139,7 +141,13 @@ export const Navbar: React.FC<NavbarProps> = ({ currentPage, onNavigate }) => {
                   }`}
                 >
                   <span className="flex items-center gap-2">
+                    {item.isVip && <Briefcase className={`w-4 h-4 ${isActive ? 'text-black' : 'text-[#F5C542]'}`} />}
                     {item.label}
+                    {item.isVip && (
+                      <span className="px-1.5 py-0.5 rounded text-[9px] font-bold bg-[#D4AF37]/20 text-[#F5C542] border border-[#D4AF37]/40">
+                        INVEST
+                      </span>
+                    )}
                     {item.isHot && (
                       <span className="px-1.5 py-0.5 rounded text-[9px] font-bold bg-[#00C853]/20 text-[#00C853] border border-[#00C853]/40">
                         SIMULATOR

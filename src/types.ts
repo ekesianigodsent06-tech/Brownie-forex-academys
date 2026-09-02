@@ -6,6 +6,7 @@ export type PageId =
   | 'simulator'
   | 'faq'
   | 'contact'
+  | 'partnership'
   | 'privacy'
   | 'terms'
   | 'risk';
