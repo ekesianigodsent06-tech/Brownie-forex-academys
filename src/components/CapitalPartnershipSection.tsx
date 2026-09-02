@@ -94,7 +94,7 @@ export const CapitalPartnershipSection: React.FC<CapitalPartnershipSectionProps>
       `💰 *Target Capital Tier:* ${selectedTier}\n` +
       `🏛️ *Preferred Broker:* ${effectiveBroker}\n` +
       `📊 *PAMM Model:* Non-Custodial PAMM Account\n` +
-      `🎯 *Target Yield:* 20% - 30% Monthly Target\n` +
+      `🎯 *Target Yield:* 80% - 100% Monthly Target\n` +
       `⚖️ *Profit Split:* 30% - 50% Performance-Based\n` +
       (notes.trim() ? `📝 *Objective / Notes:* ${notes.trim()}\n` : '') +
       `━━━━━━━━━━━━━━━━━━━━━━━━━━━\n` +
@@ -171,10 +171,10 @@ export const CapitalPartnershipSection: React.FC<CapitalPartnershipSectionProps>
                 <TrendingUp className="w-6 h-6" />
               </div>
               <h3 className="font-display font-bold text-xl text-white group-hover:text-[#F5C542] transition-colors">
-                20% – 30% Target Monthly Return
+                80% – 100% Target Monthly Return
               </h3>
               <p className="text-xs sm:text-sm text-neutral-300 leading-relaxed">
-                Our master execution targets <strong className="text-[#F5C542]">20% minimum to 30% maximum</strong> monthly yields through precision Smart Money Concepts (SMC) on Gold (XAU/USD), FX Majors, and Deriv Synthetic Indices, backed by strict drawdown caps.
+                Our master execution targets <strong className="text-[#F5C542]">80% minimum to 100% maximum</strong> monthly yields through precision Smart Money Concepts (SMC) on Gold (XAU/USD), FX Majors, and Deriv Synthetic Indices, backed by strict drawdown caps.
               </p>
             </div>
             <div className="pt-4 mt-4 border-t border-[#1a2538] flex items-center gap-2 text-xs font-mono text-[#F5C542]">
@@ -290,7 +290,7 @@ export const CapitalPartnershipSection: React.FC<CapitalPartnershipSectionProps>
                       `💰 *Target Capital Tier:* ${selectedTier}\n` +
                       `🏛️ *Preferred Broker:* ${effectiveBroker}\n` +
                       `📊 *PAMM Model:* Non-Custodial PAMM Account\n` +
-                      `🎯 *Target Yield:* 20% - 30% Monthly Target\n` +
+                      `🎯 *Target Yield:* 80% - 100% Monthly Target\n` +
                       `⚖️ *Profit Split:* 30% - 50% Performance-Based\n` +
                       (notes ? `📝 *Notes:* ${notes}` : '')
                     )}`}
